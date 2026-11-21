@@ -91,6 +91,12 @@
 
           <div class="product-grid" id="search-grid"></div>
 
+          <nav class="pager" id="search-pager" hidden aria-label="Páginas del catálogo">
+            <button type="button" id="pager-prev">Anterior</button>
+            <span data-page-list></span>
+            <button type="button" id="pager-next">Siguiente</button>
+          </nav>
+
           <div class="empty-state" id="search-empty" hidden role="status">
             <div class="empty-state__media" aria-hidden="true">
               <div class="empty-state__glow"></div>
@@ -109,41 +115,6 @@
               <button type="button" class="empty-state__secondary" id="empty-reset">Ver todos</button>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section class="admin-section" aria-labelledby="admin-title">
-        <div class="catalog-section__inner">
-          <div class="section-heading section-heading--compact">
-            <div>
-              <p class="eyebrow">Admin</p>
-              <h2 id="admin-title">Alta rápida</h2>
-            </div>
-            <p>Formulario mínimo para cargar repuestos mientras el catálogo visual vive arriba.</p>
-          </div>
-          <form id="part-form" class="admin-form" novalidate>
-            <label for="part-title">Título</label>
-            <input id="part-title" name="title" type="text" maxlength="200" required autocomplete="off" />
-            <div class="admin-row">
-              <div>
-                <label for="part-brand">Marca</label>
-                <input id="part-brand" name="brand" type="text" maxlength="80" required autocomplete="off" />
-              </div>
-              <div>
-                <label for="part-category">Categoría</label>
-                <select id="part-category" name="category" required></select>
-              </div>
-              <div>
-                <label for="part-price">Precio</label>
-                <input id="part-price" name="price" type="number" min="0" step="0.01" />
-              </div>
-            </div>
-            <button class="button" type="submit">Agregar repuesto</button>
-            <p id="part-form-error" class="status" role="alert"></p>
-          </form>
-          <ul id="part-list" class="admin-list"></ul>
-          <p id="part-empty" class="muted" hidden>Todavía no hay repuestos.</p>
-          <p class="muted">Catálogo: <span id="part-count">0</span></p>
         </div>
       </section>
 
@@ -168,6 +139,16 @@
     <footer class="site-footer">
       <p>Lenguaje de Programación · marketplace de repuestos · diseño lab Aceite → Vite</p>
     </footer>
+
+    <dialog class="product-modal" id="product-modal" aria-labelledby="product-modal-title">
+      <div class="product-modal__panel">
+        <button class="product-modal__close" type="button" id="product-modal-close" aria-label="Cerrar ficha">
+          <svg width="16" height="16" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2 2l8 8"></path><path d="M10 2 2 10"></path></svg>
+        </button>
+        <div class="product-modal__visual" id="product-modal-visual"></div>
+        <div class="product-modal__content" id="product-modal-content"></div>
+      </div>
+    </dialog>
 
     <script type="module" src="./main.ts"></script>
   </body>

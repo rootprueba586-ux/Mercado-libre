@@ -1,7 +1,4 @@
-// Punto de entrada del frontend.
-import { startPartView } from '../../parts/part.view.ts';
+// Punto de entrada del frontend. El catálogo se carga con el seed; no hay alta rápida en la página.
 import { startSearchView } from '../../search/search.view.ts';
 
 startSearchView();
-startPartView();
-// tasks queda oculto en el HTML; se puede reactivar cuando haga falta la demo de plantilla.
