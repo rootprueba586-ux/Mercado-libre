@@ -8,9 +8,9 @@
 
 | Ítem | Enlace |
 | --- | --- |
-| Repositorio | https://github.com/rootprueba586-ux/Mercado-libre |
-| GitHub Project (público) | _(completa tras `npm run backlog` → pestaña Projects del repo)_ |
-| Release **v0.0.0** | https://github.com/rootprueba586-ux/Mercado-libre/releases/tag/v0.0.0 |
+| Repositorio | https://github.com/sebasartelugo/Mercado-libre |
+| GitHub Project (público) | _(completa tras `gh auth refresh -s project,read:project` → `npm run backlog` → pestaña Projects del repo)_ |
+| Release **v0.0.0** | https://github.com/sebasartelugo/Mercado-libre/releases/tag/v0.0.0 |
 | Video 2 min (proyecto con `npm run dev`) | _(pega aquí el enlace de YouTube no listado o Drive cuando esté listo)_ |
 
 ## Cómo arrancar lo que muestra el video
@@ -37,7 +37,11 @@ Abre **http://localhost:5173**: búsqueda con UI tipo lab Aceite, catálogo en P
 
 ## Pendiente (siguientes sprints)
 
-- GitHub Project con el backlog (`gh auth refresh -s project` → `npm run backlog`)
+- GitHub Project con el backlog (`gh auth refresh -s project,read:project` → `npm run backlog`)
 - Implementar índice invertido en `src/shared/algorithms/` (reto H9.1)
 - Ingeniería inversa en `clon/` (H1.2)
 - Pegar el enlace del video en la tabla de arriba
+
+## Nota Classroom
+
+El remoto oficial de Classroom (`rootprueba586-ux/Mercado-libre`) no acepta push con la cuenta `sebasartelugo` (403). Entrega y release viven en **https://github.com/sebasartelugo/Mercado-libre**. Si el profesor exige el repo de Classroom, inicia sesión en `gh` con la cuenta `rootprueba586-ux` y vuelve a hacer push/`gh release create`.
