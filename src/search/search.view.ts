@@ -95,12 +95,21 @@ function setupMenu(
   list.addEventListener('click', (event) => {
     const target = event.target;
     if (!(target instanceof HTMLButtonElement)) return;
-    const value = target.dataset.value ?? '';
-    menu.dataset.value = value;
-    label.textContent = target.textContent ?? 'Todas';
-    list.querySelectorAll('button').forEach((item) => item.classList.toggle('is-on', item === target));
+    applyMenu(menu, label, list, target.dataset.value ?? '');
     closeMenus();
     onChange();
+  });
+}
+
+function applyMenu(menu: HTMLElement, label: HTMLElement, list: HTMLElement, value: string): void {
+  menu.dataset.value = value;
+  const selected = [...list.querySelectorAll('button')].find(
+    (item): item is HTMLButtonElement =>
+      item instanceof HTMLButtonElement && (item.dataset.value ?? '') === value,
+  );
+  label.textContent = selected?.textContent ?? (value === '' ? 'Todas' : value);
+  list.querySelectorAll('button').forEach((item) => {
+    if (item instanceof HTMLButtonElement) item.classList.toggle('is-on', item === selected);
   });
 }
 
@@ -337,6 +346,10 @@ export function startSearchView(): void {
   const brandMenu = byId<HTMLDivElement>('menu-brand');
   const brandList = byId<HTMLUListElement>('menu-brand-list');
   const brandLabel = byId<HTMLSpanElement>('menu-brand-label');
+  const clearCategory = byId<HTMLButtonElement>('clear-category');
+  const clearBrand = byId<HTMLButtonElement>('clear-brand');
+  const clearPriceMin = byId<HTMLButtonElement>('clear-price-min');
+  const clearPriceMax = byId<HTMLButtonElement>('clear-price-max');
 
   fillMenuList(
     categoryList,
@@ -349,7 +362,9 @@ export function startSearchView(): void {
   fillMenuList(brandList, [{ value: '', label: 'Todas' }], '');
 
   const run = (): void => {
-    void runSearch();
+    runSearch().catch((error: unknown) => {
+      formError.textContent = error instanceof Error ? error.message : 'No se pudo buscar';
+    });
   };
 
   setupMenu(categoryMenu, categoryList, categoryLabel, run);
@@ -365,11 +380,11 @@ export function startSearchView(): void {
         chips.querySelectorAll('.chip').forEach((node) => node.classList.remove('is-active'));
         button.classList.add('is-active');
         qInput.value = chip.q;
-        categoryMenu.dataset.value = chip.category ?? '';
-        categoryLabel.textContent = chip.category ?? 'Todas';
-        brandMenu.dataset.value = chip.brand ?? '';
-        brandLabel.textContent = chip.brand ?? 'Todas';
-        clearButton.hidden = qInput.value.length === 0;
+        applyMenu(categoryMenu, categoryLabel, categoryList, chip.category ?? '');
+        applyMenu(brandMenu, brandLabel, brandList, chip.brand ?? '');
+        priceMinInput.value = '';
+        priceMaxInput.value = '';
+        syncClears();
         run();
       });
       return button;
@@ -435,7 +450,7 @@ export function startSearchView(): void {
     if (empty) {
       emptyTerm.textContent = qInput.value.trim() || 'ese producto';
       emptyText.textContent =
-        emptyMessage ?? 'Prueba Lubricantes, Motul o Shell. El texto libre espera el índice invertido.';
+        emptyMessage ?? 'Prueba otro nombre, marca, categoría o rango de precio.';
     }
   }
 
@@ -453,9 +468,27 @@ export function startSearchView(): void {
     paint();
   }
 
+  function syncClears(): void {
+    clearButton.hidden = qInput.value.length === 0;
+    clearCategory.hidden = (categoryMenu.dataset.value ?? '') === '';
+    clearBrand.hidden = (brandMenu.dataset.value ?? '') === '';
+    clearPriceMin.hidden = priceMinInput.value.trim() === '';
+    clearPriceMax.hidden = priceMaxInput.value.trim() === '';
+  }
+
+  function clearFilter(event: Event, apply: () => void): void {
+    event.preventDefault();
+    event.stopPropagation();
+    closeMenus();
+    apply();
+    syncClears();
+    run();
+  }
+
   async function runSearch(): Promise<void> {
     formError.textContent = '';
     notice.textContent = '';
+    syncClears();
     const priceMinRaw = priceMinInput.value.trim();
     const priceMaxRaw = priceMaxInput.value.trim();
     const category = categoryMenu.dataset.value ?? '';
@@ -477,32 +510,51 @@ export function startSearchView(): void {
   }
 
   qInput.addEventListener('input', () => {
-    clearButton.hidden = qInput.value.length === 0;
+    syncClears();
   });
+
+  priceMinInput.addEventListener('input', syncClears);
+  priceMaxInput.addEventListener('input', syncClears);
 
   clearButton.addEventListener('click', () => {
     qInput.value = '';
-    clearButton.hidden = true;
+    syncClears();
     run();
+  });
+
+  clearCategory.addEventListener('click', (event) => {
+    clearFilter(event, () => applyMenu(categoryMenu, categoryLabel, categoryList, ''));
+  });
+  clearBrand.addEventListener('click', (event) => {
+    clearFilter(event, () => applyMenu(brandMenu, brandLabel, brandList, ''));
+  });
+  clearPriceMin.addEventListener('click', (event) => {
+    clearFilter(event, () => {
+      priceMinInput.value = '';
+    });
+  });
+  clearPriceMax.addEventListener('click', (event) => {
+    clearFilter(event, () => {
+      priceMaxInput.value = '';
+    });
   });
 
   emptyReset.addEventListener('click', () => {
     qInput.value = '';
-    clearButton.hidden = true;
-    categoryMenu.dataset.value = '';
-    categoryLabel.textContent = 'Todas';
-    brandMenu.dataset.value = '';
-    brandLabel.textContent = 'Todas';
+    applyMenu(categoryMenu, categoryLabel, categoryList, '');
+    applyMenu(brandMenu, brandLabel, brandList, '');
     priceMinInput.value = '';
     priceMaxInput.value = '';
+    chips.querySelectorAll('.chip').forEach((node, index) => {
+      node.classList.toggle('is-active', index === 0);
+    });
+    syncClears();
     run();
   });
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    runSearch().catch((error: unknown) => {
-      formError.textContent = error instanceof Error ? error.message : 'No se pudo buscar';
-    });
+    run();
   });
 
   document.addEventListener('click', () => closeMenus());

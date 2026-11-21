@@ -1,4 +1,4 @@
-// API de búsqueda: filtros sin q; con q → notImplemented hasta el índice a mano.
+// API de búsqueda: filtros y texto sobre el catálogo (nombre, marca, SKU, viscosidad…).
 import request from 'supertest';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { createApp } from '../../src/app/create-app.ts';
@@ -47,11 +47,22 @@ describe('API /api/search', () => {
     expect(res.body.results).toHaveLength(1);
   });
 
-  it('con q responde contrato notImplemented sin romper', async () => {
-    const res = await request(app).get('/api/search').query({ q: '0w20' });
+  it('con q encuentra por viscosidad y sigue respetando la categoría', async () => {
+    const hit = await request(app).get('/api/search').query({ q: '0w-20' });
+    expect(hit.status).toBe(200);
+    expect(hit.body.notImplemented).toBe(false);
+    expect(hit.body.results.map((item: { sku: string }) => item.sku)).toEqual(['SKY-0W20']);
+
+    const miss = await request(app).get('/api/search').query({ q: '0w20', category: 'Frenos' });
+    expect(miss.status).toBe(200);
+    expect(miss.body.results).toEqual([]);
+  });
+
+  it('con q encuentra por marca aunque el título no la traiga', async () => {
+    const res = await request(app).get('/api/search').query({ q: 'acdelco' });
     expect(res.status).toBe(200);
-    expect(res.body.notImplemented).toBe(true);
-    expect(res.body.results).toEqual([]);
+    expect(res.body.results).toHaveLength(1);
+    expect(res.body.results[0].brand).toBe('ACDelco');
   });
 
   it('rechaza priceMin > priceMax con 400', async () => {
