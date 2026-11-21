@@ -1,9 +1,9 @@
-# Mi producto
+# Mercado Libre · marketplace de repuestos
 
-> **Alumno:** cambia este título por el nombre de tu producto y esta línea por una frase que lo explique.
-> Proyecto n.º __ del catálogo · Sitio de referencia: __ · [PRD](docs/PRD.md) · URL publicada: __
+> Busca y filtra repuestos con **índice invertido** y filtros combinados.
+> Proyecto n.º **3** del catálogo · Sitio de referencia: [Mercado Libre](https://www.mercadolibre.com.ve) · [PRD](docs/PRD.md) · [Reto](docs/reto.md) · URL publicada: __
 
-Plantilla del proyecto de **Lenguaje de Programación · 2026**.
+Proyecto de **Lenguaje de Programación · 2026**, partiendo de la plantilla del curso.
 La guía completa de la actividad está en el repositorio del curso:
 **https://github.com/Jeisonpernia/lenguaje-programacion**
 
@@ -22,9 +22,7 @@ Si te falta alguno, sigue el tutorial `tutoriales/01-instalacion-entorno.md` del
    gh repo clone TU_USUARIO/bodega-pos
    cd bodega-pos
    ```
-3. **Ponle el nombre de tu producto** en dos lugares (así tus contenedores no se mezclan con los
-   de un compañero): la línea `name: mi-producto` de `docker-compose.yml` y el campo `"name"` de
-   `package.json`. Usa minúsculas y guiones, por ejemplo `bodega-pos`.
+3. **Nombre del producto:** este repo ya usa `mercado-libre` en `docker-compose.yml` y `package.json`.
 4. **Instala las dependencias:**
    ```bash
    npm install

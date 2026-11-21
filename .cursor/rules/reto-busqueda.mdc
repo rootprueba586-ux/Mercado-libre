@@ -1,0 +1,14 @@
+---
+description: Reto de búsqueda — índice invertido, Vite y PostgreSQL
+globs: "src/parts/**/*,src/search/**/*,src/shared/algorithms/**/*,docs/reto.md,docs/adr/0003*.md"
+alwaysApply: false
+---
+
+# Reto · índice invertido + filtros
+
+- Stack fijo: Express + Vite + PostgreSQL. No portar Astro ni el lab SQLite de Aceite.
+- De Aceite solo el diseño: `search_terms`, tokens, intersección AND, pesos y filtros.
+- El diseño acordado está en `docs/adr/0003-inverted-index-search.md`.
+- No escribas código en `src/shared/structures/` ni en `src/shared/algorithms/`: pistas y revisión.
+- Funcionalidades: `src/parts/` (catálogo) y `src/search/` (consulta). Sin carpetas por capa.
+- SQL a mano y parametrizado; cambios de esquema = migración nueva (no editar `001_init.sql`).

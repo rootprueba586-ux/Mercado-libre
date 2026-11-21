@@ -1,0 +1,12 @@
+---
+description: SQL a mano, repositorios y migraciones
+globs: "db/**/*.sql,**/*.repository.ts"
+alwaysApply: false
+---
+
+# SQL y base de datos
+
+- SQL escrito a mano, sin ORM.
+- Toda consulta vive en un repositorio (`*.repository.ts`) y es parametrizada (`$1`, `$2`). Nunca concatenes texto del usuario en la consulta.
+- Cambios al esquema = migración nueva en `db/migrations/NNN_descripcion.sql`.
+- Nunca edites una migración ya aplicada.

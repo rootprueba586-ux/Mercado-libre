@@ -5,6 +5,8 @@ coverage/
 playwright-report/
 test-results/
 blob-report/
+.vite/
+*.local
 
 # Variables de entorno: NUNCA se suben (contienen contraseñas)
 .env
@@ -15,7 +17,12 @@ blob-report/
 *.log
 data/
 
+# Guía del curso (copia local; no pertenece al repo del producto)
+curso/
+
 # Sistema operativo y editores
 .DS_Store
 Thumbs.db
+Desktop.ini
+ehthumbs.db
 .idea/

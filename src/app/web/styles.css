@@ -71,15 +71,32 @@ label {
   gap: 8px;
 }
 
-input[type='text'] {
+input[type='text'],
+input[type='number'],
+select {
   flex: 1;
   min-width: 0;
+  width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font: inherit;
   background: var(--bg);
   color: var(--text);
+}
+
+.filters {
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.filters > div {
+  flex: 1 1 140px;
+}
+
+.part {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
 }
 
 button {

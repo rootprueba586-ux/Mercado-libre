@@ -1,13 +1,14 @@
 {
-  "name": "mi-producto",
+  "name": "mercado-libre",
   "version": "0.1.0",
-  "description": "Proyecto de Lenguaje de Programación · cambia este texto por la descripción de tu producto",
+  "description": "Marketplace de repuestos con índice invertido y filtros combinados",
   "private": true,
   "type": "module",
   "engines": {
     "node": ">=22.18"
   },
   "scripts": {
+    "up": "node --env-file-if-exists=.env scripts/up.mjs",
     "dev": "concurrently -n api,web -c blue,magenta \"npm:dev:api\" \"npm:dev:web\"",
     "dev:api": "node --watch --env-file-if-exists=.env src/app/server.ts",
     "dev:web": "vite",

@@ -1,0 +1,12 @@
+---
+description: Convenciones TypeScript del proyecto
+globs: "**/*.ts"
+alwaysApply: false
+---
+
+# TypeScript
+
+- Modo `strict`, sin `any`.
+- Solo sintaxis que Node.js ejecuta directo: nada de `enum`, `namespace` ni propiedades en parámetros de constructor.
+- Imports locales con extensión `.ts` (ejemplo: `import { x } from './x.ts'`).
+- Valida toda entrada de la API con el esquema Zod del `*.model.ts` de la funcionalidad y responde con el código HTTP correcto.

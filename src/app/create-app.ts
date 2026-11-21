@@ -7,6 +7,10 @@ import express, { type ErrorRequestHandler } from 'express';
 import { ZodError } from 'zod';
 import type { Pool } from '../shared/db.ts';
 import { logger } from '../shared/logger.ts';
+import { createPartRepository } from '../parts/part.repository.ts';
+import { createPartRouter } from '../parts/part.routes.ts';
+import { createSearchRepository } from '../search/search.repository.ts';
+import { createSearchRouter } from '../search/search.routes.ts';
 import { createTaskRepository } from '../tasks/task.repository.ts';
 import { createTaskRouter } from '../tasks/task.routes.ts';
 
@@ -36,8 +40,10 @@ export function createApp({ pool }: { pool: Pool }) {
     res.json({ status: 'ok' });
   });
 
-  // Una línea por funcionalidad. Cuando agregues src/sales, aquí va /api/sales.
+  // Una línea por funcionalidad.
   app.use('/api/tasks', createTaskRouter(createTaskRepository(pool)));
+  app.use('/api/parts', createPartRouter(createPartRepository(pool)));
+  app.use('/api/search', createSearchRouter(createSearchRepository(pool)));
 
   app.use('/api', (_req, res) => {
     res.status(404).json({ error: 'Ruta no encontrada' });

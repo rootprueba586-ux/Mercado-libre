@@ -4,5 +4,13 @@
     "source.fixAll.eslint": "explicit"
   },
   "typescript.tsdk": "node_modules/typescript/lib",
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "files.exclude": {
+    "**/.env": true,
+    "**/.editorconfig": true,
+    "**/.gitattributes": true,
+    "**/.dockerignore": true,
+    "**/docker-entrypoint.sh": true,
+    "**/package-lock.json": true
+  }
 }

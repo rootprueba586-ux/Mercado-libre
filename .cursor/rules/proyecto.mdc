@@ -1,0 +1,14 @@
+---
+description: Reglas generales del marketplace académico Mercado Libre
+alwaysApply: true
+---
+
+# Proyecto Mercado Libre
+
+- Marketplace de repuestos inspirado en Mercado Libre; el estudiante aprende, el asistente enseña y revisa.
+- No escribas código en `src/shared/structures/` ni en `src/shared/algorithms/`. Explica, da pistas y revisa; la implementación es a mano.
+- Screaming architecture: una carpeta por funcionalidad en `src/` (`*.model.ts`, `*.repository.ts`, `*.routes.ts`, `*.api.ts`, `*.view.ts`). No crees carpetas por capa (`controllers`, `services`, `utils`…).
+- `src/shared` no importa funcionalidades; las funcionalidades no importan `src/app`.
+- Cada bloque de código que propongas lleva una explicación breve de qué hace y por qué.
+- No subas secretos ni `.env`. Código, nombres, commits y PR en inglés; comentarios y docs pueden ir en español.
+- Commits con Conventional Commits: `feat:`, `fix:`, `test:`, `docs:`, `refactor:`, `chore:`.

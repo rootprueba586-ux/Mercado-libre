@@ -3,19 +3,78 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Mi producto · proyecto de Lenguaje de Programación" />
-    <title>Mi producto</title>
+    <meta name="description" content="Marketplace de repuestos · índice invertido + filtros" />
+    <title>Mercado Libre · repuestos</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="site-header">
-      <h1>Mi producto</h1>
-      <p>Plantilla de ejemplo. Reemplaza esta pantalla por la de tu producto.</p>
+      <h1>Mercado Libre · repuestos</h1>
+      <p>Búsqueda con filtros ahora; índice invertido (texto) lo implementas a mano.</p>
     </header>
 
     <main>
+      <section aria-labelledby="search-title">
+        <h2 id="search-title">Buscar <span id="search-count" class="count"></span></h2>
+        <form id="search-form" novalidate>
+          <label for="search-q">Texto (índice invertido · pendiente)</label>
+          <input id="search-q" name="q" type="text" maxlength="200" autocomplete="off" />
+
+          <div class="row filters">
+            <div>
+              <label for="search-brand">Marca</label>
+              <input id="search-brand" name="brand" type="text" maxlength="80" autocomplete="off" />
+            </div>
+            <div>
+              <label for="search-category">Categoría</label>
+              <select id="search-category" name="category"></select>
+            </div>
+            <div>
+              <label for="search-price-min">Precio min</label>
+              <input id="search-price-min" name="priceMin" type="number" min="0" step="0.01" />
+            </div>
+            <div>
+              <label for="search-price-max">Precio max</label>
+              <input id="search-price-max" name="priceMax" type="number" min="0" step="0.01" />
+            </div>
+          </div>
+
+          <button type="submit">Buscar</button>
+          <p id="search-form-error" class="error" role="alert"></p>
+          <p id="search-notice" class="muted" role="status"></p>
+        </form>
+        <ul id="search-results" class="task-list"></ul>
+        <p id="search-empty" class="muted" hidden>Sin resultados con esos filtros.</p>
+      </section>
+
+      <section aria-labelledby="parts-title">
+        <h2 id="parts-title">Catálogo <span id="part-count" class="count"></span></h2>
+        <form id="part-form" novalidate>
+          <label for="part-title">Título</label>
+          <input id="part-title" name="title" type="text" maxlength="200" required autocomplete="off" />
+          <div class="row filters">
+            <div>
+              <label for="part-brand">Marca</label>
+              <input id="part-brand" name="brand" type="text" maxlength="80" required autocomplete="off" />
+            </div>
+            <div>
+              <label for="part-category">Categoría</label>
+              <select id="part-category" name="category" required></select>
+            </div>
+            <div>
+              <label for="part-price">Precio</label>
+              <input id="part-price" name="price" type="number" min="0" step="0.01" />
+            </div>
+          </div>
+          <button type="submit">Agregar repuesto</button>
+          <p id="part-form-error" class="error" role="alert"></p>
+        </form>
+        <ul id="part-list" class="task-list"></ul>
+        <p id="part-empty" class="muted" hidden>Todavía no hay repuestos.</p>
+      </section>
+
       <section aria-labelledby="new-task-title">
-        <h2 id="new-task-title">Nueva tarea</h2>
+        <h2 id="new-task-title">Tareas de ejemplo (plantilla)</h2>
         <form id="task-form" novalidate>
           <label for="task-title">Título</label>
           <div class="row">
@@ -24,9 +83,6 @@
           </div>
           <p id="form-error" class="error" role="alert"></p>
         </form>
-      </section>
-
-      <section aria-labelledby="list-title">
         <h2 id="list-title">Tareas <span id="task-count" class="count"></span></h2>
         <ul id="task-list" class="task-list"></ul>
         <p id="empty-state" class="muted" hidden>Todavía no hay tareas.</p>
@@ -34,7 +90,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>Lenguaje de Programación · 2026</p>
+      <p>Lenguaje de Programación · 2026 · marketplace de repuestos</p>
     </footer>
 
     <script type="module" src="./main.ts"></script>

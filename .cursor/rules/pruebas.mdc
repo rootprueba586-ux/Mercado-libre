@@ -1,0 +1,11 @@
+---
+description: Pruebas unitarias, de API y checklist antes de cerrar
+globs: "tests/**/*.ts"
+alwaysApply: false
+---
+
+# Pruebas
+
+- Cada cambio lleva pruebas: unitarias en `tests/unit`, de API en `tests/integration`.
+- Las pruebas e2e van con Playwright en `tests/e2e` cuando toque el navegador.
+- Antes de dar por cerrado un cambio, correr `npm run check` (lint + tipos + unitarias).
