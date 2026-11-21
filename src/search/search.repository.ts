@@ -1,5 +1,4 @@
 // Búsqueda: filtros SQL siempre; texto libre (q) queda para el índice invertido a mano.
-// No importa src/shared/algorithms todavía: el alumno cableará normalize/intersect ahí.
 import type { Pool } from '../shared/db.ts';
 import type { SearchQuery, SearchResponse, SearchResultItem } from './search.model.ts';
 
@@ -11,6 +10,8 @@ type PartRow = {
   sku: string;
   price: string | null;
   image_url: string;
+  viscosity: string;
+  base: string;
 };
 
 function toItem(row: PartRow, score = 0): SearchResultItem {
@@ -22,6 +23,8 @@ function toItem(row: PartRow, score = 0): SearchResultItem {
     sku: row.sku,
     price: row.price === null ? null : Number(row.price),
     imageUrl: row.image_url,
+    viscosity: row.viscosity,
+    base: row.base,
     score,
   };
 }
@@ -29,7 +32,6 @@ function toItem(row: PartRow, score = 0): SearchResultItem {
 export function createSearchRepository(pool: Pool) {
   return {
     async search(query: SearchQuery): Promise<SearchResponse> {
-      // Con texto libre: aún no hay algorithms. Contrato estable para la UI y las pruebas.
       if (query.q.length > 0) {
         return {
           query,
@@ -41,7 +43,7 @@ export function createSearchRepository(pool: Pool) {
       }
 
       const { rows } = await pool.query<PartRow>(
-        `SELECT id, title, brand, category, sku, price, image_url
+        `SELECT id, title, brand, category, sku, price, image_url, viscosity, base
          FROM parts
          WHERE ($1 = '' OR brand = $1)
            AND ($2 = '' OR category = $2)

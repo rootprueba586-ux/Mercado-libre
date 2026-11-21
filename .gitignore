@@ -13,9 +13,9 @@ blob-report/
 .env.*
 !.env.example
 
-# Log de operaciones (H5.2)
+# Log de operaciones (H5.2) — solo la carpeta data/ en la raíz (no db/data/)
 *.log
-data/
+/data/
 
 # Guía del curso (copia local; no pertenece al repo del producto)
 curso/

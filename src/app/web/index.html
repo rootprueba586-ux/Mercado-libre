@@ -3,94 +3,170 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Marketplace de repuestos · índice invertido + filtros" />
-    <title>Mercado Libre · repuestos</title>
+    <meta name="description" content="Marketplace de repuestos · búsqueda con índice invertido" />
+    <title>Repuestos · búsqueda</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header class="site-header">
-      <h1>Mercado Libre · repuestos</h1>
-      <p>Búsqueda con filtros ahora; índice invertido (texto) lo implementas a mano.</p>
+    <header class="nav">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        Repuestos · laboratorio
+      </a>
+      <p>Búsqueda del marketplace. Filtros ahora; índice invertido a mano después.</p>
     </header>
 
-    <main>
-      <section aria-labelledby="search-title">
-        <h2 id="search-title">Buscar <span id="search-count" class="count"></span></h2>
-        <form id="search-form" novalidate>
-          <label for="search-q">Texto (índice invertido · pendiente)</label>
-          <input id="search-q" name="q" type="text" maxlength="200" autocomplete="off" />
-
-          <div class="row filters">
+    <main class="page">
+      <section class="catalog-section" id="productos" aria-labelledby="catalog-title">
+        <div class="catalog-section__inner">
+          <div class="section-heading">
             <div>
-              <label for="search-brand">Marca</label>
-              <input id="search-brand" name="brand" type="text" maxlength="80" autocomplete="off" />
+              <p class="eyebrow">Catálogo</p>
+              <h2 id="catalog-title">Busca menos.<br />Encuentra el repuesto.</h2>
             </div>
-            <div>
-              <label for="search-category">Categoría</label>
-              <select id="search-category" name="category"></select>
-            </div>
-            <div>
-              <label for="search-price-min">Precio min</label>
-              <input id="search-price-min" name="priceMin" type="number" min="0" step="0.01" />
-            </div>
-            <div>
-              <label for="search-price-max">Precio max</label>
-              <input id="search-price-max" name="priceMax" type="number" min="0" step="0.01" />
-            </div>
+            <p>
+              Elige categoría y marca, escribe lo que buscas y pulsa Buscar. El texto libre se
+              resolverá con el índice invertido cuando lo implementes en algorithms.
+            </p>
           </div>
 
-          <button type="submit">Buscar</button>
-          <p id="search-form-error" class="error" role="alert"></p>
-          <p id="search-notice" class="muted" role="status"></p>
-        </form>
-        <ul id="search-results" class="task-list"></ul>
-        <p id="search-empty" class="muted" hidden>Sin resultados con esos filtros.</p>
+          <form class="search-panel" id="search-form" novalidate>
+            <div class="search-bar">
+              <label class="search-field">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+                <input id="search-q" type="search" name="q" maxlength="200" placeholder="Ej. pastillas, Bosch, BRK-PAD…" aria-label="Buscar repuestos" autocomplete="off" />
+                <button class="search-clear" type="button" id="search-clear" hidden aria-label="Borrar búsqueda">
+                  <svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2 2l8 8"></path><path d="M10 2 2 10"></path></svg>
+                </button>
+              </label>
+              <div class="search-selects">
+                <div class="menu" id="menu-category" data-value="">
+                  <button class="menu__button" type="button" aria-expanded="false" aria-haspopup="listbox">
+                    <span class="menu__text">
+                      <span class="menu__label">Categoría</span>
+                      <span class="menu__value" id="menu-category-label">Todas</span>
+                    </span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6.2 8 10.8l4.5-4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </button>
+                  <ul class="menu__list" id="menu-category-list" role="listbox" hidden></ul>
+                </div>
+                <span class="search-divider" aria-hidden="true"></span>
+                <div class="menu" id="menu-brand" data-value="">
+                  <button class="menu__button" type="button" aria-expanded="false" aria-haspopup="listbox">
+                    <span class="menu__text">
+                      <span class="menu__label">Marca</span>
+                      <span class="menu__value" id="menu-brand-label">Todas</span>
+                    </span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6.2 8 10.8l4.5-4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </button>
+                  <ul class="menu__list" id="menu-brand-list" role="listbox" hidden></ul>
+                </div>
+              </div>
+              <span class="search-divider" aria-hidden="true"></span>
+              <div class="search-prices">
+                <label class="search-price">
+                  <span class="menu__label">Mín</span>
+                  <input id="search-price-min" name="priceMin" inputmode="decimal" placeholder="—" aria-label="Precio mínimo" />
+                </label>
+                <span class="search-divider" aria-hidden="true"></span>
+                <label class="search-price">
+                  <span class="menu__label">Máx</span>
+                  <input id="search-price-max" name="priceMax" inputmode="decimal" placeholder="—" aria-label="Precio máximo" />
+                </label>
+              </div>
+              <button class="button search-go" type="submit">
+                Buscar
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+              </button>
+            </div>
+            <div class="search-meta">
+              <div class="search-chips" id="search-chips">
+                <span class="search-chips__label">Populares</span>
+              </div>
+              <p class="result-count" aria-live="polite" id="search-count">0 productos</p>
+            </div>
+            <p id="search-form-error" class="status" role="alert"></p>
+            <p id="search-notice" class="status" role="status"></p>
+          </form>
+
+          <div class="product-grid" id="search-grid"></div>
+
+          <div class="empty-state" id="search-empty" hidden role="status">
+            <div class="empty-state__media" aria-hidden="true">
+              <div class="empty-state__glow"></div>
+              <div class="empty-state__logo">
+                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path><path d="M8.5 11h5"></path></svg>
+              </div>
+              <div class="empty-state__top">
+                <span class="empty-state__tag">Catálogo</span>
+                <span class="empty-state__status">0 resultados</span>
+              </div>
+            </div>
+            <div class="empty-state__body">
+              <span class="empty-state__eyebrow">Sin resultados</span>
+              <h2 class="empty-state__title">No encontramos <span id="empty-term">ese repuesto</span> en el catálogo.</h2>
+              <p class="empty-state__text" id="empty-text">Prueba otra marca, categoría o rango de precio.</p>
+              <button type="button" class="empty-state__secondary" id="empty-reset">Ver todos</button>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section aria-labelledby="parts-title">
-        <h2 id="parts-title">Catálogo <span id="part-count" class="count"></span></h2>
-        <form id="part-form" novalidate>
-          <label for="part-title">Título</label>
-          <input id="part-title" name="title" type="text" maxlength="200" required autocomplete="off" />
-          <div class="row filters">
+      <section class="admin-section" aria-labelledby="admin-title">
+        <div class="catalog-section__inner">
+          <div class="section-heading section-heading--compact">
             <div>
-              <label for="part-brand">Marca</label>
-              <input id="part-brand" name="brand" type="text" maxlength="80" required autocomplete="off" />
+              <p class="eyebrow">Admin</p>
+              <h2 id="admin-title">Alta rápida</h2>
             </div>
-            <div>
-              <label for="part-category">Categoría</label>
-              <select id="part-category" name="category" required></select>
-            </div>
-            <div>
-              <label for="part-price">Precio</label>
-              <input id="part-price" name="price" type="number" min="0" step="0.01" />
-            </div>
+            <p>Formulario mínimo para cargar repuestos mientras el catálogo visual vive arriba.</p>
           </div>
-          <button type="submit">Agregar repuesto</button>
-          <p id="part-form-error" class="error" role="alert"></p>
-        </form>
-        <ul id="part-list" class="task-list"></ul>
-        <p id="part-empty" class="muted" hidden>Todavía no hay repuestos.</p>
+          <form id="part-form" class="admin-form" novalidate>
+            <label for="part-title">Título</label>
+            <input id="part-title" name="title" type="text" maxlength="200" required autocomplete="off" />
+            <div class="admin-row">
+              <div>
+                <label for="part-brand">Marca</label>
+                <input id="part-brand" name="brand" type="text" maxlength="80" required autocomplete="off" />
+              </div>
+              <div>
+                <label for="part-category">Categoría</label>
+                <select id="part-category" name="category" required></select>
+              </div>
+              <div>
+                <label for="part-price">Precio</label>
+                <input id="part-price" name="price" type="number" min="0" step="0.01" />
+              </div>
+            </div>
+            <button class="button" type="submit">Agregar repuesto</button>
+            <p id="part-form-error" class="status" role="alert"></p>
+          </form>
+          <ul id="part-list" class="admin-list"></ul>
+          <p id="part-empty" class="muted" hidden>Todavía no hay repuestos.</p>
+          <p class="muted">Catálogo: <span id="part-count">0</span></p>
+        </div>
       </section>
 
-      <section aria-labelledby="new-task-title">
-        <h2 id="new-task-title">Tareas de ejemplo (plantilla)</h2>
-        <form id="task-form" novalidate>
-          <label for="task-title">Título</label>
-          <div class="row">
-            <input id="task-title" name="title" type="text" maxlength="120" required autocomplete="off" />
-            <button type="submit">Agregar</button>
-          </div>
-          <p id="form-error" class="error" role="alert"></p>
-        </form>
-        <h2 id="list-title">Tareas <span id="task-count" class="count"></span></h2>
-        <ul id="task-list" class="task-list"></ul>
-        <p id="empty-state" class="muted" hidden>Todavía no hay tareas.</p>
+      <section class="admin-section admin-section--muted" aria-labelledby="tasks-title" hidden>
+        <div class="catalog-section__inner">
+          <h2 id="tasks-title">Tareas plantilla</h2>
+          <form id="task-form" novalidate>
+            <label for="task-title">Título</label>
+            <div class="admin-row">
+              <input id="task-title" name="title" type="text" maxlength="120" required autocomplete="off" />
+              <button class="button" type="submit">Agregar</button>
+            </div>
+            <p id="form-error" class="status" role="alert"></p>
+          </form>
+          <ul id="task-list" class="admin-list"></ul>
+          <p id="empty-state" class="muted" hidden>Todavía no hay tareas.</p>
+          <span id="task-count" class="muted"></span>
+        </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <p>Lenguaje de Programación · 2026 · marketplace de repuestos</p>
+      <p>Lenguaje de Programación · marketplace de repuestos · diseño lab Aceite → Vite</p>
     </footer>
 
     <script type="module" src="./main.ts"></script>

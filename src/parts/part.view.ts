@@ -1,4 +1,4 @@
-// Pantalla mínima del catálogo: lista de repuestos + alta rápida.
+// Alta rápida de repuestos (admin). Categorías = catálogo Aceite.
 import { partApi } from './part.api.ts';
 import { PartCategory, type Part } from './part.model.ts';
 
@@ -16,7 +16,7 @@ export function startPartView(): void {
   const priceInput = byId<HTMLInputElement>('part-price');
   const formError = byId<HTMLParagraphElement>('part-form-error');
   const list = byId<HTMLUListElement>('part-list');
-  const count = byId<HTMLSpanElement>('part-count');
+  const count = byId<HTMLElement>('part-count');
   const emptyState = byId<HTMLParagraphElement>('part-empty');
 
   let parts: Part[] = [];
@@ -32,14 +32,14 @@ export function startPartView(): void {
     list.replaceChildren(
       ...parts.map((part) => {
         const item = document.createElement('li');
-        item.className = 'part';
         const price =
           part.price === null ? 'Sin precio' : `$${part.price.toLocaleString('es-VE', { minimumFractionDigits: 2 })}`;
-        item.textContent = `${part.title} · ${part.brand} · ${part.category} · ${price}`;
+        const extra = [part.viscosity, part.base].filter(Boolean).join(' · ');
+        item.textContent = `${part.title} · ${part.brand} · ${part.category}${extra ? ` · ${extra}` : ''} · ${price}`;
         return item;
       }),
     );
-    count.textContent = `(${parts.length})`;
+    count.textContent = String(parts.length);
     emptyState.hidden = parts.length > 0;
   }
 
@@ -60,6 +60,9 @@ export function startPartView(): void {
         sku: '',
         price: priceRaw === '' ? null : Number(priceRaw),
         imageUrl: '',
+        viscosity: '',
+        base: '',
+        externalId: null,
       });
       parts = [...parts, created].sort((a, b) => a.title.localeCompare(b.title, 'es'));
       form.reset();

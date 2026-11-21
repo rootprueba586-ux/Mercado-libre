@@ -14,12 +14,15 @@ const pool = createPool(process.env.TEST_DATABASE_URL!);
 const app = createApp({ pool });
 
 const sample = {
-  title: 'Pastillas de freno',
-  brand: 'Bosch',
-  category: 'brakes',
-  sku: 'BRK-1',
+  title: 'Pastillas de freno delanteras',
+  brand: 'ACDelco',
+  category: 'Frenos',
+  sku: 'LDF-0043',
   price: 40,
   imageUrl: '',
+  viscosity: '',
+  base: '',
+  externalId: null,
 };
 
 beforeEach(async () => {
@@ -34,7 +37,7 @@ describe('API /api/parts', () => {
   it('crea un repuesto y lo lista', async () => {
     const created = await request(app).post('/api/parts').send(sample);
     expect(created.status).toBe(201);
-    expect(created.body).toMatchObject({ id: 1, title: 'Pastillas de freno', brand: 'Bosch' });
+    expect(created.body).toMatchObject({ id: 1, title: sample.title, brand: 'ACDelco', category: 'Frenos' });
 
     const list = await request(app).get('/api/parts');
     expect(list.status).toBe(200);
@@ -42,7 +45,7 @@ describe('API /api/parts', () => {
   });
 
   it('rechaza categoría inválida con 400', async () => {
-    const res = await request(app).post('/api/parts').send({ ...sample, category: 'lubricantes' });
+    const res = await request(app).post('/api/parts').send({ ...sample, category: 'brakes' });
     expect(res.status).toBe(400);
     expect(res.body.error).toBe('Datos no válidos');
   });

@@ -1,7 +1,11 @@
 // Datos de prueba (H10.3). Ejecuta: npm run seed
-// Incluye tasks de la plantilla + repuestos + algunas filas demo en search_terms
-// (términos escritos a mano; el sync automático lo hace el alumno después).
+// Fuente: db/data/products.json (copia del catálogo Aceite) — mismos nombre, marca,
+// categoría, SKU, precio, imagen; viscosidad/base como en laboratorio/busqueda/sync.mjs.
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import pg from 'pg';
+import { PartCategory } from '../src/parts/part.model.ts';
 
 const url = process.env.DATABASE_URL;
 if (!url) {
@@ -9,28 +13,62 @@ if (!url) {
   process.exit(1);
 }
 
-const PARTS = [
-  { title: 'Pastillas de freno delanteras', brand: 'Bosch', category: 'brakes', sku: 'BRK-PAD-001', price: 45.5 },
-  { title: 'Disco de freno ventilado', brand: 'Brembo', category: 'brakes', sku: 'BRK-DSC-002', price: 78 },
-  { title: 'Filtro de aceite', brand: 'Mann', category: 'filters', sku: 'FLT-OIL-010', price: 12.3 },
-  { title: 'Filtro de aire', brand: 'Mann', category: 'filters', sku: 'FLT-AIR-011', price: 18.9 },
-  { title: 'Filtro de cabina', brand: 'Bosch', category: 'filters', sku: 'FLT-CAB-012', price: 22 },
-  { title: 'Bujía iridium', brand: 'NGK', category: 'engine', sku: 'ENG-SPK-020', price: 9.5 },
-  { title: 'Correa de distribución', brand: 'Gates', category: 'engine', sku: 'ENG-BLT-021', price: 65 },
-  { title: 'Bomba de agua', brand: 'Gates', category: 'engine', sku: 'ENG-PMP-022', price: 54 },
-  { title: 'Alternador 12V', brand: 'Valeo', category: 'electrical', sku: 'ELC-ALT-030', price: 120 },
-  { title: 'Batería 60Ah', brand: 'Bosch', category: 'electrical', sku: 'ELC-BAT-031', price: 95 },
-  { title: 'Amortiguador delantero', brand: 'Monroe', category: 'suspension', sku: 'SUS-SHK-040', price: 70 },
-  { title: 'Resorte helicoidal', brand: 'Monroe', category: 'suspension', sku: 'SUS-SPR-041', price: 48 },
-  { title: 'Espejo retrovisor izquierdo', brand: 'TYC', category: 'body', sku: 'BDY-MIR-050', price: 35 },
-  { title: 'Faro delantero derecho', brand: 'TYC', category: 'body', sku: 'BDY-LGT-051', price: 88 },
-  { title: 'Aceite sintético 5W30', brand: 'Mobil', category: 'other', sku: 'OTH-OIL-060', price: 28 },
-  { title: 'Kit de herramientas básico', brand: 'Stanley', category: 'other', sku: 'OTH-TLS-061', price: 40 },
-  { title: 'Sensor ABS rueda', brand: 'Bosch', category: 'brakes', sku: 'BRK-ABS-003', price: 32 },
-  { title: 'Bobina de encendido', brand: 'NGK', category: 'electrical', sku: 'ELC-COI-032', price: 27 },
-] as const;
+type AceiteProduct = {
+  id: string;
+  name: string;
+  brand: string;
+  category: string;
+  sku: string;
+  price: number | null;
+  image: string;
+  searchTags?: string[];
+};
 
-const TOTAL_TASKS = 100;
+function gradoDe(texto: string): string {
+  const match = String(texto).match(/(?:^|[^\d])(\d{1,2})\s*w[\s\u2010\u2011\u2013\u2014-]?(\d{2})\b/i);
+  if (match) return `${match[1]}W-${match[2]}`;
+  if (/\batf\b/i.test(texto) || /\bdexron\b/i.test(texto)) return 'ATF';
+  return '';
+}
+
+function baseDe(texto: string): string {
+  const actual = String(texto);
+  if (/semi[\s-]*sint|technosynthese|synthetic blend|mezcla sint|\bblend\b/i.test(actual)) {
+    return 'Semi sintético';
+  }
+  if (/full[\s-]*sint|100\s*%\s*sint|totalmente sint/i.test(actual)) return 'Full sintético';
+  if (/\bsemi\b/i.test(actual) && /sint/i.test(actual)) return 'Semi sintético';
+  if (/sint[eé]tic/i.test(actual)) return 'Sintético';
+  if (/mineral|conventional|convencional/i.test(actual)) return 'Mineral';
+  return '';
+}
+
+function baseDeEtiquetas(etiquetas: string[]): string {
+  const set = new Set(etiquetas.map((e) => e.toLowerCase()));
+  if (set.has('semi') && (set.has('sintetico') || set.has('sintetica'))) return 'Semi sintético';
+  if ((set.has('full') || set.has('100')) && set.has('sintetico')) return 'Full sintético';
+  if (set.has('mineral')) return 'Mineral';
+  if (set.has('sintetico') || set.has('sintetica')) return 'Sintético';
+  return '';
+}
+
+function fichaDe(producto: AceiteProduct): { viscosity: string; base: string } {
+  const tags = producto.searchTags ?? [];
+  const gradoEtiqueta = tags.map((t) => gradoDe(t)).find(Boolean) ?? '';
+  const viscosity =
+    gradoDe(producto.name) || gradoDe(producto.sku) || gradoEtiqueta;
+  const base = baseDe(producto.name) || baseDeEtiquetas(tags);
+  return { viscosity, base };
+}
+
+const productsPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'data/products.json');
+const catalog = JSON.parse(readFileSync(productsPath, 'utf8')) as AceiteProduct[];
+
+for (const product of catalog) {
+  PartCategory.parse(product.category);
+}
+
+const TOTAL_TASKS = 50;
 const client = new pg.Client({ connectionString: url });
 await client.connect();
 
@@ -48,46 +86,59 @@ try {
   );
 
   const insertedIds: number[] = [];
-  for (const part of PARTS) {
+  for (const product of catalog) {
+    const ficha = fichaDe(product);
     const { rows } = await client.query<{ id: number }>(
-      `INSERT INTO parts (title, brand, category, sku, price)
-       VALUES ($1, $2, $3, $4, $5)
+      `INSERT INTO parts (title, brand, category, sku, price, image_url, viscosity, base, external_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
        RETURNING id`,
-      [part.title, part.brand, part.category, part.sku, part.price],
+      [
+        product.name,
+        product.brand,
+        product.category,
+        product.sku ?? '',
+        product.price,
+        product.image ?? '',
+        ficha.viscosity,
+        ficha.base,
+        product.id,
+      ],
     );
     insertedIds.push(rows[0]!.id);
   }
 
-  // Demo estática del índice (2–3 productos). No es el algoritmo de sync.
-  const demoTerms: { partIndex: number; term: string; field: string }[] = [
-    { partIndex: 0, term: 'pastillas', field: 'title' },
-    { partIndex: 0, term: 'freno', field: 'title' },
-    { partIndex: 0, term: 'bosch', field: 'brand' },
-    { partIndex: 0, term: 'brk-pad-001', field: 'sku' },
-    { partIndex: 0, term: 'brakes', field: 'category' },
-    { partIndex: 2, term: 'filtro', field: 'title' },
-    { partIndex: 2, term: 'aceite', field: 'title' },
-    { partIndex: 2, term: 'mann', field: 'brand' },
-    { partIndex: 2, term: 'flt-oil-010', field: 'sku' },
-    { partIndex: 8, term: 'alternador', field: 'title' },
-    { partIndex: 8, term: 'valeo', field: 'brand' },
-    { partIndex: 8, term: 'elc-alt-030', field: 'sku' },
-  ];
-
-  for (const item of demoTerms) {
-    const partId = insertedIds[item.partIndex];
-    if (partId === undefined) continue;
-    await client.query(
-      `INSERT INTO search_terms (term, part_id, field) VALUES ($1, $2, $3)
-       ON CONFLICT DO NOTHING`,
-      [item.term, partId, item.field],
-    );
+  // Términos demo desde searchTags de los 3 primeros (no es el sync completo).
+  for (let i = 0; i < Math.min(3, catalog.length); i += 1) {
+    const product = catalog[i]!;
+    const partId = insertedIds[i]!;
+    const terms = [
+      { term: product.brand.toLowerCase(), field: 'brand' },
+      { term: product.category.toLowerCase(), field: 'category' },
+      { term: product.sku.toLowerCase(), field: 'sku' },
+      ...(product.searchTags ?? []).slice(0, 6).map((term) => ({
+        term: term.toLowerCase(),
+        field: 'tag' as const,
+      })),
+    ];
+    for (const item of terms) {
+      await client.query(
+        `INSERT INTO search_terms (term, part_id, field) VALUES ($1, $2, $3)
+         ON CONFLICT DO NOTHING`,
+        [item.term, partId, item.field],
+      );
+    }
   }
 
   await client.query('COMMIT');
-  console.log(
-    `Listo: ${TOTAL_TASKS} tareas, ${PARTS.length} repuestos y ${demoTerms.length} términos demo en search_terms.`,
-  );
+
+  const brands = [...new Set(catalog.map((p) => p.brand))];
+  const byCategory = catalog.reduce<Record<string, number>>((acc, p) => {
+    acc[p.category] = (acc[p.category] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  console.log(`Listo: ${catalog.length} productos Aceite, ${brands.length} marcas, ${TOTAL_TASKS} tareas.`);
+  console.log('Por categoría:', byCategory);
 } catch (error) {
   await client.query('ROLLBACK');
   console.error('No se pudieron cargar los datos:', (error as Error).message);

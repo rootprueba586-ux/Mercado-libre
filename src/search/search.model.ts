@@ -1,5 +1,4 @@
 // Validación de la consulta de búsqueda (filtros + texto libre).
-// Misma idea que Aceite consultaValida: q, marca/categoría, rango de precio.
 import { z } from 'zod';
 import { PartCategory } from '../parts/part.model.ts';
 
@@ -20,11 +19,7 @@ export const SearchQuery = z
     priceMax: OptionalPrice,
   })
   .superRefine((value, ctx) => {
-    if (
-      value.priceMin !== null &&
-      value.priceMax !== null &&
-      value.priceMin > value.priceMax
-    ) {
+    if (value.priceMin !== null && value.priceMax !== null && value.priceMin > value.priceMax) {
       ctx.addIssue({
         code: 'custom',
         message: 'El mínimo del precio no puede pasar el máximo',
@@ -43,13 +38,14 @@ export type SearchResultItem = {
   sku: string;
   price: number | null;
   imageUrl: string;
+  viscosity: string;
+  base: string;
   score: number;
 };
 
 export type SearchResponse = {
   query: SearchQuery;
   results: SearchResultItem[];
-  /** true mientras el alumno no implemente normalize + intersección en algorithms */
   notImplemented: boolean;
   message?: string;
 };

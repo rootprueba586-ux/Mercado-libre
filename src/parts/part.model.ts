@@ -1,15 +1,17 @@
-// Modelo del catálogo de repuestos: tipos y validación Zod (API + frontend).
+// Modelo del catálogo: mismas categorías y campos de ficha que Aceite/laboratorio/busqueda.
 import { z } from 'zod';
 
-/** Categorías del marketplace (CHECK en la migración 002). */
+/** Categorías exactas del catálogo Aceite (products.json). */
 export const PartCategory = z.enum([
-  'brakes',
-  'filters',
-  'engine',
-  'electrical',
-  'suspension',
-  'body',
-  'other',
+  'Lubricantes',
+  'Filtros',
+  'Refrigerante',
+  'Frenos',
+  'Aditivos',
+  'Motor',
+  'Encendido',
+  'Eléctrico',
+  'Herramientas',
 ]);
 
 export type PartCategory = z.infer<typeof PartCategory>;
@@ -22,6 +24,9 @@ export const PartInput = z.object({
   sku: z.string().trim().max(80).default(''),
   price: z.number().nonnegative('El precio no puede ser negativo').nullable().default(null),
   imageUrl: z.string().trim().max(500).default(''),
+  viscosity: z.string().trim().max(40).default(''),
+  base: z.string().trim().max(40).default(''),
+  externalId: z.string().trim().max(80).nullable().default(null),
 });
 
 export type PartInput = z.infer<typeof PartInput>;
@@ -35,5 +40,8 @@ export type Part = {
   sku: string;
   price: number | null;
   imageUrl: string;
+  viscosity: string;
+  base: string;
+  externalId: string | null;
   createdAt: string;
 };
