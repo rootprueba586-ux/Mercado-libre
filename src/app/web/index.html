@@ -3,15 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Marketplace de repuestos · búsqueda con índice invertido" />
-    <title>Repuestos · búsqueda</title>
+    <meta name="description" content="Loxcides · marketplace de repuestos con búsqueda e índice invertido" />
+    <title>Loxcides · búsqueda</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div class="page-loader" id="page-loader" aria-busy="true" aria-live="polite">
+      <div class="page-loader__stage">
+        <div class="page-loader__mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="120" height="120">
+            <g class="page-loader__drop page-loader__drop--big" fill="#d8ff3e">
+              <path d="M25 8c6 9.2 13 16.8 13 26.6a13 13 0 1 1-26 0C12 24.8 19 17.2 25 8Z" />
+            </g>
+            <g class="page-loader__drop page-loader__drop--small" fill="#d8ff3e">
+              <path d="M49 34c3.1 4.8 6.8 8.6 6.8 13.2a6.8 6.8 0 1 1-13.6 0c0-4.6 3.7-8.4 6.8-13.2Z" />
+            </g>
+          </svg>
+        </div>
+        <p class="page-loader__word is-on" aria-label="Loxcides">
+          <span class="wl" style="--i: 0">L</span><span class="wl" style="--i: 1">o</span><span class="wl" style="--i: 2">x</span><span class="wl" style="--i: 3">c</span><span class="wl" style="--i: 4">i</span><span class="wl" style="--i: 5">d</span><span class="wl" style="--i: 6">e</span><span class="wl" style="--i: 7">s</span>
+        </p>
+      </div>
+    </div>
     <header class="nav">
       <a class="brand" href="/">
-        <span class="brand-mark" aria-hidden="true">R</span>
-        Repuestos · laboratorio
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="28" height="28">
+            <path fill="currentColor" d="M25 8c6 9.2 13 16.8 13 26.6a13 13 0 1 1-26 0C12 24.8 19 17.2 25 8Z" />
+            <path fill="currentColor" d="M49 34c3.1 4.8 6.8 8.6 6.8 13.2a6.8 6.8 0 1 1-13.6 0c0-4.6 3.7-8.4 6.8-13.2Z" />
+          </svg>
+        </span>
+        Loxcides
       </a>
       <p>Búsqueda del marketplace. Filtros ahora; índice invertido a mano después.</p>
     </header>
@@ -113,7 +136,10 @@
             <div class="empty-state__media" aria-hidden="true">
               <div class="empty-state__glow"></div>
               <div class="empty-state__logo">
-                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path><path d="M8.5 11h5"></path></svg>
+                <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true">
+                  <path fill="currentColor" d="M25 8c6 9.2 13 16.8 13 26.6a13 13 0 1 1-26 0C12 24.8 19 17.2 25 8Z" />
+                  <path fill="currentColor" d="M49 34c3.1 4.8 6.8 8.6 6.8 13.2a6.8 6.8 0 1 1-13.6 0c0-4.6 3.7-8.4 6.8-13.2Z" />
+                </svg>
               </div>
               <div class="empty-state__top">
                 <span class="empty-state__tag">Catálogo</span>

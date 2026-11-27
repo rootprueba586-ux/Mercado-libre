@@ -3,6 +3,13 @@
 > Busca y filtra repuestos con **índice invertido** y filtros combinados.
 > Proyecto n.º **3** del catálogo · Sitio de referencia: [Mercado Libre](https://www.mercadolibre.com.ve) · [PRD](docs/PRD.md) · [Reto](docs/reto.md) · URL publicada: __
 
+## Sprint 1 · Recreación
+
+Tres pantallas en `clon/` (inicio, listado y ficha) con marca propia, Locxides.
+La comparación con Mercado Libre, a 1280 px y a 375 px, está en [clon/README.md](clon/README.md).
+Lighthouse en escritorio: el original queda en 86 / 96 / 73 y la recreación en 98 / 100 / 100
+([docs/ingenieria-inversa.md](docs/ingenieria-inversa.md)).
+
 Proyecto de **Lenguaje de Programación · 2026**, partiendo de la plantilla del curso.
 La guía completa de la actividad está en el repositorio del curso:
 **https://github.com/Jeisonpernia/lenguaje-programacion**

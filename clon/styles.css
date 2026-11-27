@@ -1,1 +1,602 @@
-/* Estilos de tu recreación */
+/*
+  Paleta de la app (la misma de src/app/web/styles.css), con una excepción:
+  --muted está más oscuro (#545650) para que el texto gris supere el contraste 4.5:1
+  sobre el fondo de papel. Sin eso Lighthouse marca accesibilidad.
+  Para cambiar los colores de las tres pantallas, edita solo este bloque.
+*/
+:root {
+  --ink: #0b0c0e;
+  --paper: #f2f0e9;
+  --paper-deep: #e8e5dc;
+  --acid: #d8ff3e;
+  --muted: #545650;
+  --line: rgba(11, 12, 14, 0.14);
+  --card: #f1eee7;
+  --sheet: #fbfaf7;
+  --font: Aptos, "Segoe UI Variable Text", "Segoe UI", sans-serif;
+  --display: "Segoe UI Variable Display", Aptos, "Segoe UI", sans-serif;
+  --shell: 1120px;
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+img { max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+button, input, select { font: inherit; color: inherit; }
+
+button { cursor: pointer; }
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: 12px;
+  top: -48px;
+  z-index: 5;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--acid);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.skip:focus { top: 12px; }
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 28px;
+  padding: 16px max(16px, calc((100vw - var(--shell)) / 2));
+  background: var(--ink);
+  color: white;
+}
+
+.nav :focus-visible { outline-color: var(--acid); }
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.brand-logo {
+  display: block;
+  width: 36px;
+  height: 36px;
+}
+
+.nav p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 0.95rem;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nav-links a {
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: white;
+  font-weight: 700;
+}
+
+.nav-links a[aria-current="page"] { background: var(--acid); color: var(--ink); }
+
+.page {
+  margin: 12px;
+  padding: clamp(28px, 5vw, 72px) clamp(16px, 4vw, 48px) 56px;
+  border-radius: 28px;
+  background: var(--paper-deep);
+}
+
+.shell { width: min(var(--shell), 100%); margin-inline: auto; }
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.4rem, 5vw, 4.6rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.lede {
+  max-width: 42ch;
+  margin: 0;
+  color: var(--muted);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 32px;
+  align-items: end;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+  padding: 8px;
+  border: 1px solid #d9d5cb;
+  border-radius: 999px;
+  background: var(--sheet);
+}
+
+.search-field {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+  height: 52px;
+  padding: 0 8px 0 18px;
+}
+
+.search-field input,
+.filter input,
+.filter select {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.search-go,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--acid);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.chips span,
+.filter span,
+.spec dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid #c9c5ba;
+  border-radius: 999px;
+  background: transparent;
+  font-weight: 700;
+}
+
+.block { margin-top: 48px; }
+
+.block h2 {
+  margin: 0 0 16px;
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.04em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.product-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #d9d5cb;
+  border-radius: 24px;
+  background: var(--card);
+}
+
+.product-card__visual {
+  position: relative;
+  height: 190px;
+  background: linear-gradient(160deg, #20252a 0%, #0b0c0d 100%);
+}
+
+.product-card__visual img,
+.detail__visual img {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.monogram {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--acid);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.tag,
+.price-ticket {
+  position: absolute;
+  z-index: 1;
+}
+
+.tag {
+  top: 14px;
+  left: 14px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.price-ticket {
+  bottom: 14px;
+  left: 14px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background: var(--acid);
+  color: var(--ink);
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.price-ticket small {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.product-card__body { display: flex; flex: 1; flex-direction: column; gap: 8px; padding: 16px 18px 18px; }
+
+.brand-name {
+  margin: 0;
+  color: #3c403b;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.product-card h3,
+.detail h1 {
+  margin: 0;
+  max-width: none;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.sku { margin: 0; color: var(--muted); font-size: 0.85rem; font-weight: 700; }
+
+.filters {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(4, minmax(0, 0.7fr)) auto;
+  gap: 8px;
+  align-items: end;
+  margin-top: 22px;
+  padding: 10px;
+  border: 1px solid #d9d5cb;
+  border-radius: 28px;
+  background: var(--sheet);
+}
+
+.filter { display: flex; min-width: 0; flex-direction: column; gap: 4px; padding: 6px 10px; }
+
+.count { margin: 16px 0 0; font-weight: 700; }
+
+.empty {
+  margin-top: 22px;
+  padding: 28px;
+  border: 1px solid #d9d5cb;
+  border-radius: 24px;
+  background: var(--card);
+}
+
+.empty h2 { margin: 0 0 8px; font-size: 1.8rem; }
+
+.detail {
+  display: grid;
+  grid-template-columns: minmax(260px, 420px) 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.detail__visual {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--ink);
+}
+
+.detail h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  overflow-wrap: break-word;
+}
+
+.price-panel {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  background: var(--acid);
+}
+
+.price-panel strong {
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+}
+
+.price-panel p { margin: 0 0 6px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.price-panel span { min-width: 0; max-width: 28ch; }
+
+.spec {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+  padding: 16px 0;
+  border-top: 1px solid #d4d0c6;
+  border-bottom: 1px solid #d4d0c6;
+}
+
+.spec dd { margin: 4px 0 0; font-weight: 800; }
+
+.detail .button { margin-top: 8px; }
+
+.site-footer {
+  padding: 8px 16px 22px;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+.logo-stage {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.logo-stage img {
+  width: 96px;
+  height: 96px;
+}
+
+.palette {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.palette li {
+  padding: 10px;
+  border: 1px solid #d9d5cb;
+  border-radius: 20px;
+  background: var(--sheet);
+}
+
+.swatch {
+  display: block;
+  height: 72px;
+  border: 1px solid rgba(11, 12, 14, 0.14);
+  border-radius: 16px;
+}
+
+.palette strong,
+.palette code {
+  display: block;
+}
+
+.palette strong { margin-top: 10px; }
+
+.palette code {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 800px) {
+  .nav { align-items: flex-start; flex-direction: column; }
+  .hero, .detail, .grid { grid-template-columns: 1fr; }
+  /*
+    En el escritorio el <br> parte el título en dos líneas. En el teléfono se quita
+    para que el texto baje de renglón en los espacios y no se salga de la tarjeta.
+    El espacio antes del <br> evita que quede «menos.Encuentra» pegado.
+  */
+  .shell, .hero, .detail, .hero > *, .detail > * { min-width: 0; max-width: 100%; }
+  /*
+    .detail h1 es más específico que h1, así que el tamaño del teléfono
+    hay que repetirlo aquí. Si no, el título de la ficha se queda en 32 px
+    y el código (A1L-3387) se parte a la mitad.
+  */
+  h1,
+  .detail h1 {
+    font-size: 1.55rem;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+  }
+  h1 br { display: none; }
+  .filters { grid-template-columns: 1fr; border-radius: 22px; }
+  .search-bar { flex-direction: column; align-items: stretch; border-radius: 22px; }
+  .search-go, .filters .button { width: 100%; }
+  .spec { grid-template-columns: 1fr 1fr; }
+  .page { margin: 8px; padding: 24px 14px 36px; }
+  .detail__visual { min-height: 240px; }
+  .price-panel { flex-direction: column; align-items: flex-start; }
+  .price-panel span { max-width: none; }
+}
+
+/* Loader de página: Dúo entra y luego el nombre, letra a letra (como Aceite). */
+.page-loader {
+  position: fixed;
+  z-index: 900;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  transition: opacity 420ms ease;
+}
+
+.page-loader.is-done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.page-loader__stage {
+  display: flex;
+  width: min(46vw, 220px);
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.page-loader__mark {
+  width: 100%;
+}
+
+.page-loader__mark svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.page-loader__drop--big {
+  animation: page-loader-up 0.85s 0.1s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
+}
+
+.page-loader__drop--small {
+  animation: page-loader-dn 0.85s 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
+}
+
+@keyframes page-loader-up {
+  0% { transform: translateY(64px); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+
+@keyframes page-loader-dn {
+  0% { transform: translateY(-64px); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+
+.page-loader__word {
+  display: flex;
+  justify-content: center;
+  gap: 0.02em;
+  margin: 0;
+  color: white;
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 680;
+  letter-spacing: -0.04em;
+}
+
+.page-loader__word .wl {
+  opacity: 0;
+}
+
+.page-loader__word.is-on .wl {
+  animation: page-loader-word 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(1.05s + var(--i) * 55ms);
+}
+
+@keyframes page-loader-word {
+  from {
+    opacity: 0;
+    transform: translateY(46px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html:has(.page-loader:not(.is-done)) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-loader__drop--big,
+  .page-loader__drop--small,
+  .page-loader__word .wl {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

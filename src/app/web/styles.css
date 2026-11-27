@@ -1018,11 +1018,114 @@ h2 {
   width: 28px;
   height: 28px;
   place-items: center;
-  border-radius: 8px;
-  background: var(--acid);
-  color: var(--ink);
-  font-size: 14px;
-  font-weight: 800;
+  color: var(--acid);
+}
+
+.brand-mark svg {
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+
+/* Loader de página: Dúo entra y luego el nombre, letra a letra (como Aceite). */
+.page-loader {
+  position: fixed;
+  z-index: 900;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  transition: opacity 420ms ease;
+}
+
+.page-loader.is-done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.page-loader__stage {
+  display: flex;
+  width: min(46vw, 220px);
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.page-loader__mark {
+  width: 100%;
+}
+
+.page-loader__mark svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.page-loader__drop--big {
+  animation: page-loader-up 0.85s 0.1s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
+}
+
+.page-loader__drop--small {
+  animation: page-loader-dn 0.85s 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
+}
+
+@keyframes page-loader-up {
+  0% { transform: translateY(64px); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+
+@keyframes page-loader-dn {
+  0% { transform: translateY(-64px); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+
+.page-loader__word {
+  display: flex;
+  justify-content: center;
+  gap: 0.02em;
+  margin: 0;
+  color: white;
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 680;
+  letter-spacing: -0.04em;
+}
+
+.page-loader__word .wl {
+  opacity: 0;
+}
+
+.page-loader__word.is-on .wl {
+  animation: page-loader-word 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(1.05s + var(--i) * 55ms);
+}
+
+@keyframes page-loader-word {
+  from {
+    opacity: 0;
+    transform: translateY(46px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html:has(.page-loader:not(.is-done)) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-loader__drop--big,
+  .page-loader__drop--small,
+  .page-loader__word .wl {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .admin-section {

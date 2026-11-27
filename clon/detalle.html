@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Ficha de un repuesto en Loxcides." />
+    <title>Loxcides · Ficha</title>
+    <link rel="icon" href="./logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="detail">
+    <div class="page-loader" id="page-loader" aria-busy="true" aria-live="polite">
+      <div class="page-loader__stage">
+        <div class="page-loader__mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="120" height="120">
+            <g class="page-loader__drop page-loader__drop--big" fill="#d8ff3e">
+              <path d="M25 8c6 9.2 13 16.8 13 26.6a13 13 0 1 1-26 0C12 24.8 19 17.2 25 8Z" />
+            </g>
+            <g class="page-loader__drop page-loader__drop--small" fill="#d8ff3e">
+              <path d="M49 34c3.1 4.8 6.8 8.6 6.8 13.2a6.8 6.8 0 1 1-13.6 0c0-4.6 3.7-8.4 6.8-13.2Z" />
+            </g>
+          </svg>
+        </div>
+        <p class="page-loader__word is-on" aria-label="Loxcides">
+          <span class="wl" style="--i: 0">L</span><span class="wl" style="--i: 1">o</span><span class="wl" style="--i: 2">x</span><span class="wl" style="--i: 3">c</span><span class="wl" style="--i: 4">i</span><span class="wl" style="--i: 5">d</span><span class="wl" style="--i: 6">e</span><span class="wl" style="--i: 7">s</span>
+        </p>
+      </div>
+    </div>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
+    <header class="nav">
+      <a class="brand" href="index.html" data-view="home">
+        <img class="brand-logo" src="logo.svg" width="36" height="36" alt="" />
+        <span data-brand="name">Loxcides</span>
+      </a>
+      <nav class="nav-links" aria-label="Secciones">
+        <a href="index.html" data-view="home">Inicio</a>
+        <a href="listado.html" data-view="list">Listado</a>
+        <a href="detalle.html?id=a1l-3387" data-view="detail" data-id="a1l-3387">Ficha</a>
+        <a href="marca.html" data-view="brand">Marca</a>
+      </nav>
+      <p data-brand="tagline">Marketplace de repuestos</p>
+    </header>
+    <main id="contenido">
+      <section class="page" data-screen="home" hidden>
+        <div class="shell">
+          <section class="hero">
+            <div>
+              <p class="eyebrow">Catálogo</p>
+              <h1>Busca menos. <br />Encuentra el repuesto.</h1>
+            </div>
+            <p class="lede">
+              Escribe el nombre, la marca o el SKU. El listado se abre aquí mismo y el término
+              queda en la dirección, para poder volver a esa búsqueda.
+            </p>
+          </section>
+          <form class="search-bar" id="home-search" action="listado.html" method="get">
+            <label class="search-field">
+              <input type="search" name="q" maxlength="200" placeholder="Ej. filtro de aceite, SKY, 0W-20" aria-label="Buscar repuestos" />
+            </label>
+            <button class="search-go" type="submit">Buscar</button>
+          </form>
+          <div class="chips" id="categories">
+            <span>Categorías</span>
+          </div>
+          <section class="block" aria-labelledby="featured-title">
+            <h2 id="featured-title">Destacados</h2>
+            <div class="grid" id="featured"></div>
+          </section>
+        </div>
+      </section>
+      <section class="page" data-screen="list" hidden>
+        <div class="shell">
+          <p class="eyebrow">Resultados</p>
+          <h1 id="list-title">Todos los repuestos</h1>
+          <form class="filters" id="filters" action="listado.html" method="get">
+            <label class="filter">
+              <span>Buscar</span>
+              <input type="search" name="q" maxlength="200" placeholder="Filtro, marca o SKU" />
+            </label>
+            <label class="filter">
+              <span>Categoría</span>
+              <select name="category" aria-label="Categoría"></select>
+            </label>
+            <label class="filter">
+              <span>Marca</span>
+              <select name="brand" aria-label="Marca"></select>
+            </label>
+            <label class="filter">
+              <span>Mín</span>
+              <input name="min" inputmode="decimal" placeholder="—" aria-label="Precio mínimo" />
+            </label>
+            <label class="filter">
+              <span>Máx</span>
+              <input name="max" inputmode="decimal" placeholder="—" aria-label="Precio máximo" />
+            </label>
+            <button class="button" type="submit">Buscar</button>
+          </form>
+          <p class="count" id="count" aria-live="polite">0 productos</p>
+          <div class="grid" id="results"></div>
+          <div class="empty" id="empty" hidden>
+            <h2>No hay repuestos con esos filtros.</h2>
+            <p>Prueba otra palabra o quita categoría, marca y precio.</p>
+            <a class="button" id="empty-reset" href="listado.html">Ver todos</a>
+          </div>
+        </div>
+      </section>
+      <section class="page" data-screen="detail">
+        <div class="shell">
+          <p class="eyebrow">Ficha</p>
+          <article class="detail" id="detail" aria-live="polite"></article>
+        </div>
+      </section>
+      <section class="page" data-screen="brand" hidden>
+        <div class="shell">
+          <p class="eyebrow">Identidad</p>
+          <h1>Nombre, logo y colores</h1>
+          <div class="logo-stage">
+            <img src="logo.svg" width="96" height="96" alt="Logo" />
+            <div>
+              <p class="brand-name">Nombre</p>
+              <p data-brand="name">Loxcides</p>
+              <p data-brand="tagline">Marketplace de repuestos</p>
+            </div>
+          </div>
+          <p class="lede">
+            El nombre se cambia en <code>main.js</code>, objeto <code>BRAND</code>.
+            El dibujo es el archivo <code>logo.svg</code>.
+            Los colores salen de <code>styles.css</code>, bloque <code>:root</code>, y las otras pantallas usan los mismos.
+          </p>
+          <ul class="palette" id="palette">
+            <li data-color="--ink"><span class="swatch" style="background: #0b0c0e"></span><strong>Tinta</strong><code>--ink · #0b0c0e</code></li>
+            <li data-color="--paper"><span class="swatch" style="background: #f2f0e9"></span><strong>Papel</strong><code>--paper · #f2f0e9</code></li>
+            <li data-color="--paper-deep"><span class="swatch" style="background: #e8e5dc"></span><strong>Papel oscuro</strong><code>--paper-deep · #e8e5dc</code></li>
+            <li data-color="--acid"><span class="swatch" style="background: #d8ff3e"></span><strong>Ácido</strong><code>--acid · #d8ff3e</code></li>
+            <li data-color="--muted"><span class="swatch" style="background: #545650"></span><strong>Texto secundario</strong><code>--muted · #545650</code></li>
+            <li data-color="--card"><span class="swatch" style="background: #f1eee7"></span><strong>Tarjeta</strong><code>--card · #f1eee7</code></li>
+            <li data-color="--sheet"><span class="swatch" style="background: #fbfaf7"></span><strong>Buscador</strong><code>--sheet · #fbfaf7</code></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <p><span data-brand="name">Loxcides</span> · inicio, listado, ficha y marca</p>
+    </footer>
+    <script src="./main.js"></script>
+  </body>
+</html>
